@@ -152,11 +152,13 @@ The DPG generation launcher uses four samples per prompt and saves separate JPEG
 ## Citation
 
 ```bibtex
-@article{kim2026segros,
+@inproceedings{kim2026enhancing,
   title={Enhancing Alignment for Unified Multimodal Models via Semantically-Grounded Supervision},
   author={Kim, Jiyeong and So, Yerim and Choi, Hyesong and Hwang, Uiwon and Min, Dongbo},
-  journal={arXiv preprint arXiv:2603.19807},
-  year={2026}
+  booktitle={European Conference on Computer Vision},
+  pages={634--651},
+  year={2026},
+  organization={Springer}
 }
 ```
 

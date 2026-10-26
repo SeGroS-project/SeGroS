@@ -6,35 +6,6 @@ Official implementation of **Enhancing Alignment for Unified Multimodal Models v
 
 SeGroS uses text–image affinity to select semantic visual hints and reconstruction targets during fine-tuning. This repository contains the **Harmon 0.5B and 1.5B** implementation, built on [Harmon](https://github.com/wusize/Harmon). Implementations for other backbones studied in the paper are outside this repository's scope.
 
-## Method
-
-1. Rank text tokens using the sum of normalized intra-modal and inter-modal affinity scores, with equal weights.
-2. Aggregate the selected tokens' text-to-image affinities into a visual grounding map.
-3. Min–max normalize the map and always add uniform noise.
-4. Select high-scoring image tokens as visual hints, preserving their spatial order.
-5. Mask high-scoring target tokens within the existing MAR mask budget, retaining lower-scoring tokens as visible context.
-
-Visual hints and reconstruction targets belong to separate sequences and may overlap. At inference, use the base Harmon generation path without constructing the grounding map.
-
-## Repository layout
-
-```text
-configs/examples/segros.py       # Harmon 1.5B training
-configs/examples/segros_05.py    # Harmon 0.5B training
-configs/models/                 # Base model configurations
-configs/datasets/               # Data sources, tokenization, and task mixture
-src/models/harmon_dev.py        # SeGroS training and affinity computation
-src/models/harmon.py            # Base Harmon model
-src/models/mar/                 # MAR components and masking
-scripts/train.py               # Training entry point
-scripts/text2image.py           # Text-to-image inference
-scripts/geneval.py             # GenEval image generation
-scripts/dpgbench.py             # DPG-Bench image generation
-scripts/parallel_geneval.py     # Multi-GPU generation launcher
-```
-
-Other example configurations are retained as legacy experiments. Use `segros` and `segros_05` for the settings documented here.
-
 ## Installation
 
 Use a Linux environment with an NVIDIA GPU and a compatible CUDA build environment for FlashAttention and DeepSpeed. Run all commands from the repository root.
@@ -99,36 +70,6 @@ repeat = [0, 2, 2]
 ```
 
 This samples I2T and T2I tasks with equal weights and does not sample the standalone reconstruction task. The shared data configuration currently uses `batch_size=48` and `num_workers=8`. Adjust these for available hardware and record changes when comparing results.
-
-## SeGroS configuration
-
-Both training configs explicitly define:
-
-```python
-visual_hint_ratio=0.3,
-visual_hint_selection='highest',
-target_mask_selection='highest',
-text_token_filtering=True,
-text_keep_ratio=0.4,
-text_min_tokens=3,
-noise_scale=1.0,
-```
-
-| Parameter | Meaning |
-| --- | --- |
-| `visual_hint_ratio` | Fraction of image tokens used as visual hints |
-| `visual_hint_selection` | `highest`, `lowest`, or `random` hint selection |
-| `target_mask_selection` | `highest`, `lowest`, or `random` reconstruction-target selection |
-| `text_token_filtering` | Enable discriminative text-token selection |
-| `text_keep_ratio` | Fraction of valid text tokens selected |
-| `text_min_tokens` | Minimum number selected, capped by the available valid tokens |
-| `noise_scale` | Positive finite upper bound of uniform noise added to the normalized map |
-
-Noise is always applied: `noisy_scores = normalized_scores + U(0, noise_scale)`. Both selection paths use this perturbed map; the unperturbed scores are also returned for inspection. There is no `add_noise` switch. The affinity combination remains fixed at `norm_self + norm_it`.
-
-**Configuration provenance:** this snapshot retains `noise_scale=1.0` from the working code. The paper's method description specifies `0.5`; reconcile this value with the original experiment logs before claiming exact reproduction of the reported results.
-
-The masking ratio distribution remains defined by the MAR implementation and base model configuration (`mask_ratio_min=0.7`). The selection strategy changes which tokens are masked, not the sampled mask count.
 
 ## Training
 

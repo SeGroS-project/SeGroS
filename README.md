@@ -86,9 +86,9 @@ bash train.sh segros_05
 | Model | Checkpoint | GenEval ↑ | DPG-Bench ↑ | Fine-tuning dataset (paper) |
 | --- | --- | --- | --- | --- |
 | SeGroS · Harmon 1.5B | [Google Drive](https://drive.google.com/drive/folders/1e8bXvnan9z_Z81l1NzzS_itt56I62T5l?usp=sharing) | 88.66 | 86.58 | BLIP3o-60k |
-| SeGroS · Harmon 0.5B | Coming soon | 81.50 | 85.40 | MidjourneyV6 |
+| SeGroS · Harmon 0.5B | [Google Drive](https://drive.google.com/drive/folders/1OdoePJ2L4kXQUuIQP0f9pQP4Z7iAjvM5?usp=sharing) | 81.50 | 85.40 | MidjourneyV6 |
 
-Scores are reported in [Table 1 of the paper](https://arxiv.org/html/2603.19807v1#S4.T1), not re-evaluated with this cleaned code snapshot. The 1.5B checkpoint is available through Google Drive; the 0.5B checkpoint will be added when available. The current shipped configs both select MidjourneyV6; the paper's 1.5B result uses BLIP3o-60k.
+Scores are reported in [Table 1 of the paper](https://arxiv.org/html/2603.19807v1#S4.T1), not re-evaluated with this cleaned code snapshot. Both Harmon checkpoints are available through Google Drive. The current shipped configs both select MidjourneyV6; the paper's 1.5B result uses BLIP3o-60k.
 
 | Setting | 1.5B (`segros`) | 0.5B (`segros_05`) |
 | --- | --- | --- |

@@ -83,6 +83,13 @@ bash train.sh segros
 bash train.sh segros_05
 ```
 
+| Model | Checkpoint | GenEval ↑ | DPG-Bench ↑ | Fine-tuning dataset (paper) |
+| --- | --- | --- | --- | --- |
+| SeGroS · Harmon 1.5B | Coming soon | 88.66 | 86.58 | BLIP3o-60k |
+| SeGroS · Harmon 0.5B | Coming soon | 81.50 | 85.40 | MidjourneyV6 |
+
+Scores are reported in [Table 1 of the paper](https://arxiv.org/html/2603.19807v1#S4.T1), not re-evaluated with this cleaned code snapshot. Checkpoint download links will be added when available. The current shipped configs both select MidjourneyV6; the paper's 1.5B result uses BLIP3o-60k.
+
 | Setting | 1.5B (`segros`) | 0.5B (`segros_05`) |
 | --- | --- | --- |
 | Training iterations | 5,000 | 3,000 |
